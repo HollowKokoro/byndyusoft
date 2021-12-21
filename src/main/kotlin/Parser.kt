@@ -7,7 +7,7 @@ class Parser {
         Scanner(System.`in`)
         input = readLine()
             ?.split(" ")
-            ?: throw IllegalArgumentException("Не смог распарсить пользовательский ввод")
+            ?: throw IllegalArgumentException("Не удалось распарсить пользовательский ввод")
     }
 
     fun detectNums(): List<BigDecimal> {
