@@ -12,8 +12,8 @@ class Estimator {
             throw IllegalArgumentException("Не удалось распарсить пользовательский ввод")
         }
         for (operation in signs.size downTo 1) {
-            countOperation('*', '/')
-            countOperation('+', '-')
+            countOperation(Sign.MULTIPLY.sign, Sign.DIVIDE.sign)
+            countOperation(Sign.PLUS.sign, Sign.MINUS.sign)
         }
         return nums
     }
@@ -22,10 +22,10 @@ class Estimator {
         while (signs.contains(sign1) || signs.contains(sign2)) {
             val indexByPriority = extractIndexOfInput(sign1, sign2)
             when (signs[indexByPriority]) {
-                '*' -> nums[indexByPriority] *= nums[indexByPriority + 1]
-                '/' -> nums[indexByPriority] /= nums[indexByPriority + 1]
-                '+' -> nums[indexByPriority] += nums[indexByPriority + 1]
-                '-' -> nums[indexByPriority] -= nums[indexByPriority + 1]
+                Sign.MULTIPLY.sign -> nums[indexByPriority] *= nums[indexByPriority + 1]
+                Sign.DIVIDE.sign -> nums[indexByPriority] /= nums[indexByPriority + 1]
+                Sign.PLUS.sign -> nums[indexByPriority] += nums[indexByPriority + 1]
+                Sign.MINUS.sign -> nums[indexByPriority] -= nums[indexByPriority + 1]
             }
             signs.removeAt(indexByPriority)
             nums.removeAt(indexByPriority + 1)
@@ -35,11 +35,10 @@ class Estimator {
     private fun extractIndexOfInput(sign1: Char, sign2: Char): Int {
         val sign1Index = signs.indexOf(sign1)
         val sign2Index = signs.indexOf(sign2)
-        val priority = if (sign1Index != -1 && sign2Index != -1) {
+        return if (sign1Index != -1 && sign2Index != -1) {
             min(sign1Index, sign2Index)
         } else {
             max(sign1Index, sign2Index)
         }
-        return priority
     }
 }

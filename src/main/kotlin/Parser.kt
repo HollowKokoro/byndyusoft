@@ -2,21 +2,24 @@ import java.math.BigDecimal
 import java.util.*
 
 class Parser {
-    private val input: List<String>
+    private val input: String
     init {
         Scanner(System.`in`)
-        input = readLine()
-            ?.split(" ")
-            ?: throw IllegalArgumentException("Не удалось распарсить пользовательский ввод")
-    }
-
-    fun detectNums(): List<BigDecimal> {
-        return input.mapNotNull { it.toBigDecimalOrNull() }
+        input = readLine() ?: throw IllegalArgumentException("Не удалось распарсить пользовательский ввод")
     }
 
     fun detectSigns(): List<Char> {
-        return input
-            .mapNotNull { it.singleOrNull() }
-            .filter { it == '+' || it == '-' || it == '*' || it == '/' }
+        val signs = Sign.values().map { it.sign }.toMutableList()
+        signs.removeIf { !input.contains(it) }
+        return signs
+    }
+
+    fun detectNums(): List<BigDecimal> {
+        return input.split(
+            Sign.PLUS.sign,
+            Sign.MINUS.sign,
+            Sign.MULTIPLY.sign,
+            Sign.DIVIDE.sign
+        ).mapNotNull { it.toBigDecimalOrNull() }
     }
 }
