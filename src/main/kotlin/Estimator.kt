@@ -1,6 +1,4 @@
 import java.math.BigDecimal
-import kotlin.math.max
-import kotlin.math.min
 
 class Estimator {
     private val parser = Parser()
@@ -20,7 +18,7 @@ class Estimator {
 
     private fun countOperation(sign1: Char, sign2: Char) {
         while (signs.contains(sign1) || signs.contains(sign2)) {
-            val indexByPriority = extractIndexOfInput(sign1, sign2)
+            val indexByPriority = parser.extractIndexOfInput(signs, sign1, sign2)
             when (signs[indexByPriority]) {
                 Sign.MULTIPLY.sign -> nums[indexByPriority] *= nums[indexByPriority + 1]
                 Sign.DIVIDE.sign -> nums[indexByPriority] /= nums[indexByPriority + 1]
@@ -29,16 +27,6 @@ class Estimator {
             }
             signs.removeAt(indexByPriority)
             nums.removeAt(indexByPriority + 1)
-        }
-    }
-
-    private fun extractIndexOfInput(sign1: Char, sign2: Char): Int {
-        val sign1Index = signs.indexOf(sign1)
-        val sign2Index = signs.indexOf(sign2)
-        return if (sign1Index != -1 && sign2Index != -1) {
-            min(sign1Index, sign2Index)
-        } else {
-            max(sign1Index, sign2Index)
         }
     }
 }
